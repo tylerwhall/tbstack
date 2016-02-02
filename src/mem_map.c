@@ -261,7 +261,8 @@ static int mem_region_build_label_cover(struct mem_region *region,
         region_end = (char *)region->start + region->length;
         cur_start = region->labels[i];
         cur_end = cur_start + generic_chunk_size;
-        if (cur_end > region_end)
+        /* Bound chunk size to region end and check for overflow */
+        if (cur_end > region_end || cur_end <= cur_start)
             cur_end = region_end;
 
         for (++i; i < region->num_labels; ++i) {
